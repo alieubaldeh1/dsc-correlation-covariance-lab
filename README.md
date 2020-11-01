@@ -1,189 +1,285 @@
 
-# Covariance and Correlation - Lab
+# Measures of Dispersion
 
 ## Introduction
 
-In this lab, you will calculate covariance and correlation for some data in Python lists by using the formulas shown in the previous lesson. 
+Previously, you learned about three measures of central tendency: the mean, median, and mode. These metrics can give you a general understanding of where data values lie within the range of the whole dataset but they don't tell you the whole story. In fact, they can often be misleading!
 
+To truly understand your data, you also need **Measures of Dispersion**, namely: absolute deviation, standard deviation, and variance. These measures tell you how tightly (or loosely) your data is clustered around its center. Generally, measures of dispersion report on how "noisy" your dataset is. 
+
+In this lesson, you'll learn about the different measures of dispersion and explore how they are related to each other as well as other summary statistics.
+ 
 ## Objectives
+You will be able to:
 
-You will be able to: 
-- Calculate covariance and correlation  
-- Declare and use a function with arguments   
-
-
-## The data
-
-The two variables include 20 heights (in inches) and weights (in pounds). This will help us focus more on seeing covariance and correlation in action!
-
-At this point, you should be able to calculate the average height and average weight. You can also explain the medians, variances, and standard deviations for this dataset.
-
-But all of those measurements are only concerned with a **single variable**. In this lab, you'll answer the following questions:
-
-1. How does height interact with weight? 
-2. Does weight increase as height increases?
-3. Are weight and height not related at all?
-
-There are always exceptions, but when you look at the population in general, taller people will tend to weigh more than shorter people. While you should *always* be cautious when generalizing, generalization of information can be very useful as it shows you a bigger picture that you can build your intuitions upon. This is also what a lot of core statistical principles are built upon.
+* Compare the different measures of dispersion
+* Create a box plot and use it to interpret the spread of data
 
 
-First, run the below cells to get the heights and weights into the memory. 
+## Absolute Deviation
+
+**Absolute Deviation** is the simplest way of calculating the dispersion of a data set. It is calculated by taking a value from the dataset and subtracting the mean of the dataset. This helps to identify the "distance" between a given value and the mean. In other words, how much a value *deviates* from the mean.  
+
+> $\left|x_i - \bar{x}\right|$
+
+Here $x_i$ denotes an element from $[x_1, x_2, .., x_n]$ , where $n$ is the total number of data points in the dataset. Recall, the symbol $\bar{x}$ (pronounced "x-bar") represents the sample mean. The vertical bars are used to denote absolute value so all absolute deviation values are positive. This is important because when measuring deviation, you just want to focus on how big the difference is, not its sign.
+
+If that sounded a little confusing, consider this example: Say the mean test score for a group of 100 students is 58.75 out of 100. If a particular student scored 60 out of 100, the absolute deviation of that score from the mean is:
+
+> $ \left|60 - 58.75\right| = 1.25 $ 
+
+**Average Absolute Deviation** is calculated by taking the mean of all individual absolute deviations in a data set as shown in the formula below:
+
+$$\large \dfrac{1}{n}\sum^n_{i=1}\left|(x_i-\bar x)\right| $$
+
+The advantage here is that the average absolute deviation yields one number to describe dispersion. To illustrate this, consider this example: In a group of four people, two people earn 50K USD a year and two earn 60K USD a year. The mean of the data set is 55K USD. The absolute deviations are:
+
+> $ \left|50 - 55\right| = 5 $   
+> $ \left|50 - 55\right| = 5 $   
+> $ \left|60 - 55\right| = 5 $     
+> $ \left|60 - 55\right| = 5 $     
+
+The average absolute deviation is:
+
+> $ \large \frac{5+5+5+5}{4} = 5 $
+
+## Variance
+
+A more complex measure of dispersion is **Variance**. Remember, measures of dispersion emphasize the magnitude of differences from the mean, not their sign. Unlike the absolute deviation, which uses the absolute value of the deviation to take care of negative values, the variance achieves positive values by *squaring* each of the deviations. Similar to what you saw with the average absolute deviation, the next step in calculating variance is to add up the squared deviations (the **sum of squares**), then divide by the total number of values in your dataset. 
+
+OK, that was a mouthful but you can break it down mathematically as follows:
+
+$$ \large \sigma^2 = \dfrac{1}{n}\displaystyle\sum^n_{i=1}(x_i-\mu)^2 $$
+
+> Recall the distinction between the sample mean ($\bar{x}$) and the population mean ($\mu$) - namely, that a sample mean is calculated using a subset of the population whereas the population mean is calculated using the entire population. You'll see here that the population mean is used. This is because unlike the mean, the variance formula changes slightly depending on whether you are working with data from a sample or data from the entire population. Don't worry if this is a little confusing now, the details will be discussed later. 
+
+Say you want to calculate the variance of our salary data above. The first step is to calculate all of the differences from the mean:
+
+> $ 50 - 55 = -5 $   
+> $ 50 - 55 = -5 $   
+> $ 60 - 55 = 5 $     
+> $ 60 - 55 = 5 $  
+
+*Note: no absolute values, the signs are kept*
+
+Next, square the differences:
+
+> $ (-5)^2 = 25 $   
+> $ (-5)^2 = 25 $   
+> $ 5^2 = 25 $     
+> $ 5^2 = 25 $
+
+Finally, add them up and divide by the total number of data points:
+
+> $ \large \frac{25+25+25+25}{4} = 25 $
+
+As a measure of dispersion, the variance is very useful. If the values in the data set are spread out about their mean, the variance will be a large number. On the other hand, if the values are clustered closely around their mean, the variance will be a much smaller number. 
+
+There are, however, two potential problems with the variance. First, because the deviations of values from the mean are squared, this gives more weight to extreme values. Outliers, which differ substantially more from the mean than the rest of the data in a data set, will impact the variance. Secondly, the variance is not in the same *units* as the individual values in a data set. Variance is measured in the *units squared*. This means we cannot directly relate a variance value to the values in our data set. If this isn't clear, go back to the salary example above. The salaries are measured in USD but the variance is measured in *USD squared* which is not the same thing.
+
+Fortunately, calculating the standard deviation rather than the variance fixes this problem. 
+
+## Standard Deviation
+
+The **Standard Deviation** is another measure of the spread of values within a dataset. 
+It is simply the square root of the variance. In the above formula, $\sigma^2$ is the variance so $\sigma$ is the standard deviation. 
+
+$$ \large \sigma = \sqrt{\dfrac{1}{n}\displaystyle\sum^n_{i=1}(x_i-\mu)^2} $$
+
+So for the salary example above, you can calculate:
+
+> $ \sigma = \sqrt{\sigma^2} = \sqrt{25} = 5 $
+
+Now, the units are in USD again!
+
+## Quantiles, Percentiles, and Quartiles
+
+**Quantiles** are points in a distribution that relate to the *rank order* of values in that distribution. Rank ordering just means the data are sorted in ascending order. You can find any quantile by sorting the sample. The middle value of the sorted sample (middle quantile, 50th percentile) is known as the **median**. The **limits** are the **minimum** and **maximum** values. Any other locations between these points can be described in terms of **percentiles**.
+
+Percentiles are descriptions of quantiles relative to 100. So the 80th percentile is 80% of the way up an ascending list of sorted values of data. For example, take a look at the image below: 80% of people in the data set are shorter than you so you are in the 80th percentile for height. 
+
+<img src="./images/new_percent.png" width="600">
+
+
+## InterQuartile Range - IQR
+The **quartiles** of a dataset divide the data into **four** equal parts. Since there are four equal parts, there are 3 quartile positions that divide them. These are denoted by Q1, Q2, and Q3. The second quartile position, Q2, is the median of the dataset, which divides the dataset in half. Q1 divides the lower half and is known as the "lower quartile". Similarly, Q3 divides the upper half and is known as the "upper quartile". The image below illustrates how this looks:
+
+<img src="images/new_measuresofdispersion2.png" width="600">
+
+The **InterQuartile Range (IQR)** is a measure of where the “middle fifty” is in a dataset which is given by $ Q3 - Q1 $. This is useful because it tells you where the bulk of the values lie. To relate these concepts back to percentiles, Q1 is the 25th percentile and Q3 is the 75th percentile. The IQR is calculated by subtracting the 25th percentile from the 75th percentile. 
+
+In practice, there are actually several different methods for determining percentiles which are accepted and you may have encountered some of these methods before. For now, you can just focus on the method shown below which is what is used by default in the go-to statistical and mathematical Python packages that you will use throughout this course and your career like `numpy`.
+
+### Calculating IQR for a Given Data Set
+
+You will now get a feel for how IQR is calculated using the collection of numbers from the image above. First, put the numbers in a list.
 
 
 ```python
-# Run this cell
-height = [68, 71, 61, 69, 71, 58, 72, 73, 58, 74, 
-          61, 59, 69, 68, 64, 69, 72, 66, 65, 69]
-weight = [165, 201, 140, 170, 192, 125, 195, 205, 
-          115, 210, 135, 125, 172, 175, 145, 170, 
-          200, 155, 150, 171]
+# List of numbers
+x = [3, 5, 8, 12, 15, 18, 20, 22, 25, 30, 50, 80, 687]
 ```
 
-## Calculating the covariance 
-
-Here's the covariance formula once again:  
-
-$$cov (x,y) = \frac{1}{n-1}\displaystyle\sum_{i=1}^{n}(x_i -\bar x)(y_i - \bar y)$$
-
-Note that we divide by $(n-1)$ here, because of the assumption that this particular data is a _sample of a bigger population_. The bigger population here could be the entire world population. When working with populations. The general rule is to divide by $n$. When working with a sample, you should divide by $n-1$. In practice, however, you'll see the two formulas are often being used interchangeably. 
-
-### Mean normalization 
-
-Looking at the formula of covariance, you'll notice that it is composed out of $(x_i -\bar x)$ and $(y_i -\bar y)$. These are also known as the **mean normalized** variables $x$ and $y$. The idea is that you take each element in $x$ and $y$ and respectively subtract the mean of $x$ and $y$. The result is that your "altered" x and y now have mean 0.
-
-So how do you do  this? You can write a function that takes in a vector, calculates the mean of this vector and subtracts the calculated mean value from each element to calculate $(x_i -\bar x)$ and  $(y_i -\bar y)$ . 
-
+**Step 1:** Sort the data in ascending order (these numbers are already sorted but don't skip this step when you do this on other data- it's important!).
 
 
 ```python
-# Write a function to take in an iterable, calculate the mean and subtract the mean value
-# from each element, creating and returning a new list. 
-
-def mean_normalize(var):
-
-    pass
-
-mean_normalize([1, 2, 3, 4, 5]), mean_normalize([11, 22, 33, 44, 55])
-
-# ([-2.0, -1.0, 0.0, 1.0, 2.0], [-22.0, -11.0, 0.0, 11.0, 22.0])
+# Sort in ascending order
+x = sorted(x)
 ```
 
-Great! You'll see that our function maintains the _variance_ of list elements and moves the mean to zero. As a quick test, you can visualize what exactly happens to the data with mean normalization. 
+**Step 2:** Calculate the distance between the last element and the first element.
 
 
 ```python
-# Mean normalize the height 
-height_normalized = None
+# Distance between last and first element
+distance = len(x) - 1
 ```
 
-Now, run the cell below to visualize the data. 
+**Step 3:** Multiply the distance by the desired percentiles, 25th and 75th, expressed as fractions. This will yield the indices of the elements that correspond to the 25th percentile and 75th percentile, respectively.
 
 
 ```python
-# Visualize the height data distribution before and after mean normalization 
+# Multiply distance by percentiles
+
+# Index of 25th percentile
+index_p25 = 0.25*distance
+index_p25
+```
+
+
+
+
+    3.0
+
+
+
+
+```python
+# Index of 75th percentile
+index_p75 = 0.75*distance
+index_p75
+```
+
+
+
+
+    9.0
+
+
+
+**Step 4:** Using the indices calculated above, determine the 25th and 75th percentiles.
+
+
+```python
+# 25th Percentile
+p25 = x[int(index_p25)]
+p25
+```
+
+
+
+
+    12
+
+
+
+
+```python
+# 75th Percentile
+p75 = x[int(index_p75)]
+p75
+```
+
+
+
+
+    30
+
+
+
+**Step 5:** Calculate the IQR by subtracting the 25th percentile from the 75th percentile.
+
+
+```python
+# IQR
+iqr = p75 - p25
+iqr
+```
+
+
+
+
+    18
+
+
+
+In practice, you will probably never calculate the IQR by hand since `numpy` has a built-in method for calculating percentiles.  
+
+
+```python
+import numpy as np
+
+np.percentile(x, 75) - np.percentile(x, 25)
+```
+
+
+
+
+    18.0
+
+
+
+You might have noticed that the indices calculated above happened to be whole numbers. Whole numbers are great to work with here since they can be used as indices directly. The calculation becomes a little more complicated when the indices are fractional numbers. In this case, `numpy` will use a technique called "linear interpolation" to take the fractional components into account. This is beyond the scope of what you need to know but if you are curious about how it works you can check out the [documentation]("https://docs.scipy.org/doc/numpy/reference/generated/numpy.percentile.html"). 
+
+## Visualizing Dispersion with Box Plots
+
+As a Data Scientist, you will need to be able to present your analysis visually. Box plots are a commonly used visual representation of centrality and spread of data that is based on quartiles.
+
+A general depiction of a box plot is shown below:
+
+<img src="./images/new_boxplot.png" width="600">
+
+An important feature of the box plot is the set of lines that radiate from the middle to the "minimum" and "maximum" values. These lines are commonly called **"whiskers."** You've probably noticed in the image above that the lines do not go to the true minimum and maximum values (confusing right?) but rather $ Q1 - 1.5*IQR $ and $ Q3 + 1.5*IQR $, respectively. Any values that fall outside this range are shown as individual data points. These values are considered outliers. 
+
+> Note: You might have read about some alternative definitions for how to draw the whiskers. Though these alternative definitions may be acceptable in some contexts, the definition presented here is what Python uses so it's best to stick with that.
+
+Matplotlib can be used to generate box plots given a collection of values. Consider the retirement age data again:
+
+
+```python
 import matplotlib.pyplot as plt
-import seaborn as sns
 %matplotlib inline
-sns.distplot(height_normalized)
-sns.distplot(height);
+
+plt.style.use('ggplot') # for viewing a grid on plot
+x = [54, 54, 54, 55, 56, 57, 57, 58, 58, 60, 81]
+plt.boxplot(x)
+plt.title ("Retirement Age Box Plot")
+plt.show()
 ```
 
-There you go! The _shape_ of the data isn't changed, but the mean is just shifted! You can also try this for the `weight` variable if you wish.
 
-### The dot product
-Now that you know how to normalize the variables `height` and `weight`, you have to go ahead and take the _dot product_ of these two normalized variables.
+![png](index_files/index_20_0.png)
 
-> A dot product is a linear algebraic operation that takes two equal-length sequences of numbers and returns a single number which can be used as a measure of similarity between these sequences (also known as vectors).
 
-[Here is a great article explaining this in detail](https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/).
+In this box plot, you can see that it is very easy to visualize the central tendency of the data. The median is drawn as a blue line at 57. The IQR identifies the middle 50% of the data which is shown as the box. The whiskers (two horizontal lines) show the minimum (54) and maximum (60) values in our dataset that fall within $Q1-1.5*IQR$ and $Q3+1.5*IQR$, respectively. The point at 81 falls outside the range of the whiskers so it is shown as a data point and is considered an outlier.
 
-For two vectors `a` and `b`, a dot product is calculated by multiplying each element of one vector to its counterpart in the second, and then adding them up together. Imagine you want to take the dot product of two variables `a` and `b`:
-
-```
- a[0] * b[0] + a[1] * b[1] + a[2] * b[2] ...
-
-```
-
-Let's write a function that takes two iterables and returns their dot product. 
+The outlier data point squishes the visualization of the box. Sometimes, it is convenient to hide the outliers to get a better view of the box. You can pass the argument `showfliers=False` to hide the outliers:
 
 
 ```python
-# Write a function to calculate the dot product of two iterables 
-
-def dot_product(x, y):
-    
-    
-    pass
-
-
-
-a = [1, 2, 3]
-b = [4, 5, 6]
-
-dot_product(a,b)
-
-#  32  calculated as (1*4 + 2*5 + 3*6)
+plt.boxplot(x, showfliers=False)
+plt.title ("Retirement Age Box Plot - Without Outliers")
+plt.show()
 ```
 
-Now that you have the numerator of the formula sorted out, let's finally write a function `covariance()` that takes the `height` and `weight` lists and returns the covariance value using the functions you created earlier. 
+
+![png](index_files/index_22_0.png)
 
 
-```python
-# Calculate covariance using functions above
-
-def covariance(var1, var2):
-
-    pass
+Use the ```showfliers``` option with caution. You don't want to ignore data! 
 
 
+## Summary
 
-
-
-
-# Uncomment below to check your function
-# covariance(height, weight)
-
-# 144.75789473684208
-```
-
-Remember that covariance is a metric that is hard to interpret. Run the cell below to visualize `height` and `weight` on a scatter plot! 
-
-
-```python
-# Plot a scatter graph between height and weight to visually inspect the relationship 
-plt.scatter(height, weight);
-```
-
-So we can see there is quite a bit of positive relationship between the two, but a covariance value is a bit hard to interpret. So let's try calculating the correlation. 
-
-## Calculating the correlation
-
-Once again, here's the formula to calculate the correlation. 
-$$ r = \frac{\sum_{i=1}^{n}(x_i -\bar x)(y_i - \bar y)} {\sqrt{\sum_{i=1}^{n}(x_i - \bar x)^2 \sum_{i=1}^{n}(y_i-\bar y)^2}}$$
-
-
-Now, use the functions `mean_normalize()` and `dot_product()` to define a function, `correlation()` that calculates the correlation between two lists. 
-
-_Hint: You can use the `sqrt()` function from the `math` package to calculate the square root._
-
-
-```python
-# Calculate Correlation between two variables using formula above
-import math
-def correlation(var1, var2):
-    
-    pass
-
-
-
-# correlation(height, weight)
-# 0.98
-```
-
-A correlation of 0.98, that's very close to 1! That means that there is clearly a strong relationship between height and weight. At least, for this particular sample!  And that's one of the key takeaways, sample size plays a major rule in determining the nature of a variable and its relationship with other variables. The set of 20 records we seem to correlate highly, but if you look at 20 other people, you'll see that this result will be different. The correlation here will depend on the *sample*, and you'll see that this will differ more clearly when working with smaller samples.
-
-_Note:_ A correlation of a variable with itself is always equal to 1.  
-
-## Summary 
-
-In this lab, you learned how to calculate the covariance and correlation between variables. You also looked at mean normalization and dot products. Finally, you learned how to calculate these measures using pandas built-in methods. 
+In this lesson, you learned about some commonly used measures of dispersion. These measures identify the spread or deviation present in a dataset. You also looked at quantiles, percentiles, quartiles, and IQR as well as how to use those concepts to construct box plots for visualizing the distribution of data in a given dataset. You will revisit these topics continuously throughout the course and will see how these concepts are used toward effective data analysis. 
